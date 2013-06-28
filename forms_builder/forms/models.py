@@ -27,7 +27,7 @@ class FormManager(models.Manager):
     """
     Only show published forms for non-staff users.
     """
-    def published(self, for_user=None):
+    def published(self, for_site=None, for_user=None):
         if for_user is not None and for_user.is_staff:
             return self.all()
         filters = [
@@ -35,8 +35,8 @@ class FormManager(models.Manager):
             Q(expiry_date__gte=now()) | Q(expiry_date__isnull=True),
             Q(status=STATUS_PUBLISHED),
         ]
-        if settings.USE_SITES:
-            filters.append(Q(sites=Site.objects.get_current()))
+        if settings.USE_SITES and for_site is not None:
+            filters.append(Q(sites=for_site))
         return self.filter(*filters)
 
 

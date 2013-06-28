@@ -20,7 +20,7 @@ def form_detail(request, slug, template="forms/form_detail.html"):
     """
     Display a built form and handle submission.
     """
-    published = Form.objects.published(for_user=request.user)
+    published = Form.objects.published(for_site=request.site, for_user=request.user)
     form = get_object_or_404(published, slug=slug)
     if form.login_required and not request.user.is_authenticated():
         return redirect("%s?%s=%s" % (settings.LOGIN_URL, REDIRECT_FIELD_NAME,
