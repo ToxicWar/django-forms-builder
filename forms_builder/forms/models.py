@@ -55,11 +55,11 @@ class AbstractForm(models.Model):
 
     sites = models.ManyToManyField(Site, editable=settings.USE_SITES,
         default=[django_settings.SITE_ID])
-    title = models.CharField(_("Title"), max_length=50)
+    title = models.CharField(_("Title"), max_length=255)
     slug = models.SlugField(_("Slug"), editable=settings.EDITABLE_SLUGS,
-        max_length=100, unique=True)
+        max_length=255, unique=True)
     intro = models.TextField(_("Intro"), blank=True)
-    button_text = models.CharField(_("Button text"), max_length=50,
+    button_text = models.CharField(_("Button text"), max_length=100,
         default=_("Submit"))
     response = models.TextField(_("Response"), blank=True)
     status = models.IntegerField(_("Status"), choices=STATUS_CHOICES,
@@ -143,7 +143,7 @@ class AbstractField(models.Model):
     """
 
     label = models.CharField(_("Label"), max_length=settings.LABEL_MAX_LENGTH)
-    slug = models.SlugField(_('Slug'), max_length=100, blank=True,
+    slug = models.SlugField(_('Slug'), max_length=255, blank=True,
             default="")
     field_type = models.IntegerField(_("Type"), choices=fields.NAMES)
     required = models.BooleanField(_("Required"), default=True)
@@ -156,7 +156,7 @@ class AbstractField(models.Model):
     default = models.CharField(_("Default value"), blank=True,
         max_length=settings.FIELD_MAX_LENGTH)
     placeholder_text = models.CharField(_("Placeholder Text"), null=True,
-        blank=True, max_length=100, editable=settings.USE_HTML5)
+        blank=True, max_length=255, editable=settings.USE_HTML5)
     help_text = models.CharField(_("Help text"), blank=True, max_length=100)
 
     objects = FieldManager()
