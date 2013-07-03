@@ -234,6 +234,12 @@ class FormForForm(forms.ModelForm):
                 return self.cleaned_data[field.slug]
         return None
 
+    def hidden_email_to(self):
+        for field in self.form_fields:
+            if field.is_a(fields.HIDDEN):
+                return self.cleaned_data[field.slug]
+        return None
+
 
 class EntriesForm(forms.Form):
     """
