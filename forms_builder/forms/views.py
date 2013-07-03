@@ -48,7 +48,7 @@ def form_detail(request, slug, template="forms/form_detail.html"):
                 "request": request,
             }
             email_from = form.email_from or settings.DEFAULT_FROM_EMAIL
-            email_to = form_for_form.hidden_email_to() or form_for_form.email_to()
+            email_to = request.site.get_email()
             if email_to and form.send_email:
                 send_mail_template(subject, "form_response", email_from,
                                    email_to, context=context,
