@@ -145,7 +145,11 @@ class FormForForm(forms.ModelForm):
             if "max_length" in arg_names:
                 field_args["max_length"] = settings.FIELD_MAX_LENGTH
             if "choices" in arg_names:
-                field_args["choices"] = field.get_choices()
+                if field.field_type == 103:
+                    request = context['request']
+                    field_args['site'] = request.site
+                else:
+                    field_args["choices"] = field.get_choices()
             if field_widget is not None:
                 field_args["widget"] = field_widget
             #
