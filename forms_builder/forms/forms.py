@@ -145,7 +145,7 @@ class FormForForm(forms.ModelForm):
             if "max_length" in arg_names:
                 field_args["max_length"] = settings.FIELD_MAX_LENGTH
             if "choices" in arg_names:
-                if field.field_type == 103:
+                if field.field_type == 103 or field.field_type == 104:
                     request = context['request']
                     field_args['site'] = request.site
                 else:
