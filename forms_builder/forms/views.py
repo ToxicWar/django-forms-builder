@@ -48,7 +48,7 @@ def form_detail(request, slug, template="forms/form_detail.html"):
                 "request": request,
             }
             email_from = form.email_from or settings.DEFAULT_FROM_EMAIL
-            email_to = request.site.get_email()
+            email_to = request.site.dealercompany.get_responsible_email()
             if email_to and form.send_email:
                 send_mail_template(subject, "form_response", email_from,
                                    email_to, context=context,
