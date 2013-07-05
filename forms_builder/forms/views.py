@@ -10,7 +10,7 @@ from django.utils.http import urlquote
 from email_extras.utils import send_mail_template
 
 from forms_builder.forms.forms import FormForForm
-from forms_builder.forms.models import Form
+from forms_builder.forms.models import Form, Field
 from forms_builder.forms.settings import SEND_FROM_SUBMITTER, USE_SITES
 from forms_builder.forms.signals import form_invalid, form_valid
 from forms_builder.forms.utils import split_choices
@@ -48,7 +48,14 @@ def form_detail(request, slug, template="forms/form_detail.html"):
                 "request": request,
             }
             email_from = form.email_from or settings.DEFAULT_FROM_EMAIL
-            email_to = request.site.dealercompany.get_responsible_email()
+
+            try:
+                field = form_for_form.form.fields.get(field_type=104)
+                email_to = form_for_form.cleaned_data[field.slug]
+            except Field.DoesNotExist:
+                contacts = request.site.dealercompany.dealercontact_set.filter(forms__in=[form])
+                email_to = list([contact.email for contact in contacts])
+
             if email_to and form.send_email:
                 send_mail_template(subject, "form_response", email_from,
                                    email_to, context=context,
