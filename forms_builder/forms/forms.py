@@ -117,13 +117,14 @@ class FormForForm(forms.ModelForm):
 
     class Meta:
         model = FormEntry
-        exclude = ("form", "entry_time")
+        exclude = ("site", "form", "entry_time")
 
     def __init__(self, form, context, *args, **kwargs):
         """
         Dynamically add each of the form fields for the given form model
         instance and its related field model instances.
         """
+        self.request = context['request']
         self.form = form
         self.form_fields = form.fields.visible()
         initial = kwargs.pop("initial", {})
@@ -146,8 +147,7 @@ class FormForForm(forms.ModelForm):
                 field_args["max_length"] = settings.FIELD_MAX_LENGTH
             if "choices" in arg_names:
                 if field.field_type == 103 or field.field_type == 104:
-                    request = context['request']
-                    field_args['site'] = request.site
+                    field_args['site'] = self.request.site
                 else:
                     field_args["choices"] = field.get_choices()
             if field_widget is not None:
@@ -203,6 +203,7 @@ class FormForForm(forms.ModelForm):
         """
         entry = super(FormForForm, self).save(commit=False)
         entry.form = self.form
+        entry.site = self.request.site
         entry.entry_time = now()
         entry.save()
         entry_fields = entry.fields.values_list("field_id", flat=True)

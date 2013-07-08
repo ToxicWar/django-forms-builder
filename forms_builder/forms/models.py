@@ -242,6 +242,7 @@ class AbstractFieldEntry(models.Model):
 
 class FormEntry(AbstractFormEntry):
     form = models.ForeignKey("Form", related_name="entries")
+    site = models.ForeignKey(Site, verbose_name='Site')
 
 
 class FieldEntry(AbstractFieldEntry):
