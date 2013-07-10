@@ -81,6 +81,8 @@ class AbstractForm(models.Model):
         max_length=200)
     email_subject = models.CharField(_("Subject"), max_length=200, blank=True)
     email_message = models.TextField(_("Message"), blank=True)
+    logo = models.BooleanField(_("Send email"), default=True, help_text=
+        _("If enabled, the display of the logo"))
 
     objects = FormManager()
 

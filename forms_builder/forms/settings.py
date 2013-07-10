@@ -37,3 +37,6 @@ CSV_DELIMITER = getattr(settings, "FORMS_BUILDER_CSV_DELIMITER", ",")
 
 # Boolean controlling whether emails to staff recipients are sent from the form submitter.
 SEND_FROM_SUBMITTER = getattr(settings, "FORMS_BUILDER_SEND_FROM_SUBMITTER", True)
+
+# Logo url
+MAIN_LOGO = getattr(settings, "FORMS_BUILDER_MAIN_LOGO", '')

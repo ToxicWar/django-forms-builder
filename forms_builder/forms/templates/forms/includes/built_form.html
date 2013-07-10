@@ -1,4 +1,8 @@
     <h1>{{ form.title }}</h1>
+    {% if form.logo %}
+        <img src="{{ main_logo }}">
+        <img src="{{ request.site.dealercompany.logo.url }}">
+    {% endif %}
     {% if form.intro %}
     <p>{{ form.intro|safe }}</p>
     {% endif %}

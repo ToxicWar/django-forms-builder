@@ -1,6 +1,6 @@
 from django import template
 from django.template.loader import get_template
-
+from forms_builder.forms import settings
 from forms_builder.forms.forms import FormForForm
 from forms_builder.forms.models import Form, FormEntry
 
@@ -19,6 +19,7 @@ class BuiltFormNode(template.Node):
         user = getattr(request, "user", None)
         post = getattr(request, "POST", None)
         files = getattr(request, "FILES", None)
+        context["main_logo"] = settings.MAIN_LOGO
         if self.name != "form":
             lookup = {
                 str(self.name): template.Variable(self.value).resolve(context)
