@@ -59,6 +59,8 @@ class AbstractForm(models.Model):
     slug = models.SlugField(_("Slug"), editable=settings.EDITABLE_SLUGS,
         max_length=255, unique=True)
     intro = models.TextField(_("Intro"), blank=True)
+    logo = models.BooleanField(_("Logo"), default=True, help_text=
+        _("If enabled, the display of the logo"))
     button_text = models.CharField(_("Button text"), max_length=100,
         default=_("Submit"))
     response = models.TextField(_("Response"), blank=True)
@@ -81,8 +83,6 @@ class AbstractForm(models.Model):
         max_length=200)
     email_subject = models.CharField(_("Subject"), max_length=200, blank=True)
     email_message = models.TextField(_("Message"), blank=True)
-    logo = models.BooleanField(_("Send email"), default=True, help_text=
-        _("If enabled, the display of the logo"))
 
     objects = FormManager()
 
