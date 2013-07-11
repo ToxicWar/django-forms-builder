@@ -49,19 +49,12 @@ class BuiltDataFormNode(template.Node):
     def render(self, context):
         form_entry = template.Variable(self.value).resolve(context)
 
-        fields = []
-        for field in form_entry.form.fields.all():
-            fields.append(field.label)
-        _fields_entry = form_entry.fields.all()
-
-        fields_entry = []
-        for field_entry in _fields_entry:
-            fields_entry.append(field_entry.value)
-        fields_entry.reverse()
+        fields = form_entry.form.fields.all()
+        fields_entry = form_entry.fields.all()
 
         data_form_entry = []
-        for i in range(_fields_entry.count()):
-            data = [fields[i], fields_entry[i]]
+        for i in range(fields_entry.count()):
+            data = [fields.get(id=fields_entry[i].field_id).label, fields_entry[i].value]
             data_form_entry.append(data)
 
         t = get_template("forms/includes/built_data_form.html")
