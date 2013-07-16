@@ -1,8 +1,6 @@
 
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.contrib.sites.models import Site
-from django.core.mail import EmailMessage
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import RequestContext
@@ -13,7 +11,9 @@ from forms_builder.forms.forms import FormForForm
 from forms_builder.forms.models import Form, Field
 from forms_builder.forms.settings import SEND_FROM_SUBMITTER, USE_SITES
 from forms_builder.forms.signals import form_invalid, form_valid
-from forms_builder.forms.utils import split_choices
+from forms_builder.forms.utils import split_choices, now
+
+import requests, json
 
 
 def form_detail(request, slug, template="forms/form_detail.html"):
@@ -32,10 +32,20 @@ def form_detail(request, slug, template="forms/form_detail.html"):
         if not form_for_form.is_valid():
             form_invalid.send(sender=request, form=form_for_form)
         else:
-            entry = form_for_form.save()
+            # TransferRequest
+            site = request.site
+            if site.is_slave() and site.master:
+                entry = None
+                data = {'slug': json.dumps(slug), 'data': json.dumps(request.POST), 'site': site}
+                requests.post(
+                    'http://'+site.master.domains.get(id=1).domain+'/api/transfer-request/',
+                    data=data
+                )
+            else:
+                entry = form_for_form.save()
             subject = form.email_subject
             if not subject:
-                subject = "%s - %s" % (form.title, entry.entry_time)
+                subject = "%s - %s" % (form.title, now())
             fields = []
             for (k, v) in form_for_form.fields.items():
                 value = form_for_form.cleaned_data[k]
