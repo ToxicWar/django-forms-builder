@@ -38,7 +38,7 @@ def form_detail(request, slug, template="forms/form_detail.html"):
                 entry = None
                 data = {'slug': json.dumps(slug), 'data': json.dumps(request.POST), 'site': site}
                 requests.post(
-                    'http://'+site.master.domains.get(id=1).domain+'/api/transfer-request/',
+                    'http://'+site.master.domains.get(id=1).domain+reverse('TransferRequest'),
                     data=data
                 )
             else:
