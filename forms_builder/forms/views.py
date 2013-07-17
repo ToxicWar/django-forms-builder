@@ -36,7 +36,7 @@ def form_detail(request, slug, template="forms/form_detail.html"):
             site = request.site
             if site.is_slave() and site.master:
                 entry = None
-                data = {'slug': json.dumps(slug), 'data': json.dumps(request.POST), 'site': site}
+                data = {'slug': slug, 'data': json.dumps(request.POST), 'site': site}
                 requests.post(
                     'http://'+site.master.domains.get(id=1).domain+reverse('TransferRequest'),
                     data=data
