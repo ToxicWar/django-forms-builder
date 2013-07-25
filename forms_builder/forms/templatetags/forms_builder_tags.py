@@ -62,6 +62,51 @@ class BuiltDataFormNode(template.Node):
         return t.render(context)
 
 
+class BuiltDataFormByTemplateNode(template.Node):
+
+    def __init__(self, name, value, template):
+        self.name = name
+        self.value = value
+        self.template = template
+
+    def render(self, context):
+        form_entry = template.Variable(self.value).resolve(context)
+
+        fields = form_entry.form.fields.all()
+        fields_slug = fields.values('slug')
+        fields_entry = form_entry.fields.all()
+
+        for i in range(len(fields_entry)):
+            slug = fields_slug[i]['slug']
+            context[slug] = fields_entry.get(field_id=fields.get(slug=slug).id).value
+
+        t = get_template("forms/includes/%s" % (self.template or form_entry.form.slug + '.html'))
+        return t.render(context)
+
+
+class ContactDataFormNode(template.Node):
+
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+    def render(self, context):
+        form_entry = template.Variable(self.value).resolve(context)
+        slugs = ['fio', 'mobilnyi_telefon', 'elektronnaia_pochta']
+
+        fields = form_entry.form.fields.filter(slug__in=slugs)
+        fields_id = [field.id for field in fields]
+        fields_slugs = [field.slug for field in fields]
+        fields_entry = form_entry.fields.filter(field_id__in=fields_id)
+
+        for i in range(len(fields_slugs)):
+            slug = fields_slugs[i]
+            context[slug] = fields_entry.get(field_id=fields.get(slug=slug).id).value
+
+        t = get_template("forms/includes/contact_data_form.html")
+        return t.render(context)
+
+
 @register.tag
 def render_built_form(parser, token):
     """
@@ -93,3 +138,26 @@ def render_built_data_form(parser, token):
         arg = "form=" + arg
     name, value = arg.split("=", 1)
     return BuiltDataFormNode(name, value)
+
+
+@register.tag
+def render_contact_data_form(parser, token):
+    _, arg = token.split_contents()
+    if "=" not in arg:
+        arg = "form=" + arg
+    name, value = arg.split("=", 1)
+    return ContactDataFormNode(name, value)
+
+
+@register.tag
+def render_built_data_form_by_template(parser, token):
+    try:
+        _, arg, template = token.split_contents()
+    except ValueError:
+        _, arg = token.split_contents()
+        template = None
+
+    if "=" not in arg:
+        arg = "form=" + arg
+    name, value = arg.split("=", 1)
+    return BuiltDataFormByTemplateNode(name, value, template)
