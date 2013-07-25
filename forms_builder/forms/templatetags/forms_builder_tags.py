@@ -49,8 +49,8 @@ class BuiltDataFormNode(template.Node):
     def render(self, context):
         form_entry = template.Variable(self.value).resolve(context)
 
-        fields = form_entry.form.fields.all()
-        fields_entry = form_entry.fields.all()
+        fields = form_entry.form.fields.order_by('order')
+        fields_entry = form_entry.fields.order_by('order')
 
         data_form_entry = []
         for i in range(fields_entry.count()):
@@ -72,9 +72,9 @@ class BuiltDataFormByTemplateNode(template.Node):
     def render(self, context):
         form_entry = template.Variable(self.value).resolve(context)
 
-        fields = form_entry.form.fields.all()
+        fields = form_entry.form.fields.order_by('order')
         fields_slug = fields.values('slug')
-        fields_entry = form_entry.fields.all()
+        fields_entry = form_entry.fields.order_by('order')
 
         for i in range(len(fields_entry)):
             slug = fields_slug[i]['slug']

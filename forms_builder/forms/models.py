@@ -249,6 +249,15 @@ class FormEntry(AbstractFormEntry):
 
 class FieldEntry(AbstractFieldEntry):
     entry = models.ForeignKey("FormEntry", related_name="fields")
+    order = models.IntegerField(_("Order"), null=True, blank=True)
+
+    class Meta(AbstractField.Meta):
+        ordering = ("order",)
+
+    def save(self, *args, **kwargs):
+        if self.order is None:
+            self.order = self.entry.form.fields.count()
+        super(FieldEntry, self).save(*args, **kwargs)
 
 
 class Form(AbstractForm):

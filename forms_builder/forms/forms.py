@@ -218,9 +218,10 @@ class FormForForm(forms.ModelForm):
             if field.id in entry_fields:
                 field_entry = entry.fields.get(field_id=field.id)
                 field_entry.value = value
+                field_entry.order = field.order
                 field_entry.save()
             else:
-                new = {"entry": entry, "field_id": field.id, "value": value}
+                new = {"entry": entry, "field_id": field.id, "value": value, "order": field.order}
                 new_entry_fields.append(self.field_entry_model(**new))
         if new_entry_fields:
             if django.VERSION >= (1, 4, 0):
