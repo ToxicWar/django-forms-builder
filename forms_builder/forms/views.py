@@ -9,7 +9,7 @@ from email_extras.utils import send_mail_template
 
 from forms_builder.forms.forms import FormForForm
 from forms_builder.forms.models import Form, Field
-from forms_builder.forms.settings import SEND_FROM_SUBMITTER, USE_SITES
+from forms_builder.forms.settings import SEND_FROM_SUBMITTER, USE_SITES, MAIN_DOMAIN
 from forms_builder.forms.signals import form_invalid, form_valid
 from forms_builder.forms.utils import split_choices, now
 
@@ -38,7 +38,7 @@ def form_detail(request, slug, template="forms/form_detail.html"):
                 entry = None
                 data = {'slug': slug, 'data': json.dumps(request.POST), 'site': site}
                 requests.post(
-                    'http://'+site.master.domains.get(id=1).domain+reverse('TransferRequest'),
+                    'http://' + MAIN_DOMAIN + reverse('TransferRequest'),
                     data=data
                 )
             else:

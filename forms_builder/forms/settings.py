@@ -40,3 +40,6 @@ SEND_FROM_SUBMITTER = getattr(settings, "FORMS_BUILDER_SEND_FROM_SUBMITTER", Tru
 
 # Logo url
 MAIN_LOGO = getattr(settings, "FORMS_BUILDER_MAIN_LOGO", '')
+
+# Main domain
+MAIN_DOMAIN = getattr(settings, "MAIN_DOMAIN", '')
