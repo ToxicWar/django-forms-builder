@@ -3,7 +3,6 @@ from django.core.urlresolvers import reverse
 from django.conf import settings as django_settings
 from django.db import models
 from django.db.models import Q
-from django.db.models.loading import get_model
 from django.utils.translation import ugettext, ugettext_lazy as _
 
 from forms_builder.forms import fields
@@ -11,7 +10,7 @@ from forms_builder.forms import settings
 from forms_builder.forms.utils import now, slugify, unique_slug
 
 if settings.SITE_MODEL:
-    Site = get_model(*settings.SITE_MODEL.split('.'))
+    Site = settings.SITE_MODEL
 else:
     from django.contrib.sites.models import Site
 
