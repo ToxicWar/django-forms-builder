@@ -65,7 +65,7 @@ is in the ``TEMPLATE_CONTEXT_PROCESSORS`` setting in your project's
 Then add ``forms_builder.forms.urls`` to your project's ``urls``
 module::
 
-    from django.conf.urls.defaults import patterns, include, url
+    from django.conf.urls import patterns, include, url
     import forms_builder.forms.urls # add this import
 
     from django.contrib import admin
