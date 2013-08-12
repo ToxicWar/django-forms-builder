@@ -12,6 +12,9 @@ from django.template import Template
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Div, Field
+
 from forms_builder.forms import fields
 from forms_builder.forms.models import FormEntry, FieldEntry
 from forms_builder.forms import settings
@@ -127,6 +130,7 @@ class FormForForm(forms.ModelForm):
         self.request = context['request']
         self.form = form
         self.form_fields = form.fields.visible()
+
         initial = kwargs.pop("initial", {})
         # If a FormEntry instance is given to edit, stores it's field
         # values for using as initial data.
@@ -195,6 +199,19 @@ class FormForForm(forms.ModelForm):
             if field.placeholder_text and not field.default:
                 text = field.placeholder_text
                 self.fields[field_key].widget.attrs["placeholder"] = text
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.layout_setup()
+
+    def layout_setup(self):
+        _fields = [field.slug for field in self.form_fields]
+        _layout = ()
+        for _field in _fields:
+            _layout += (fields.DIVS[_field],)
+
+        layout = Layout(*_layout)
+        self.helper.add_layout(layout)
 
     def save(self, **kwargs):
         """
