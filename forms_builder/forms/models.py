@@ -57,6 +57,7 @@ class AbstractForm(models.Model):
     title = models.CharField(_("Title"), max_length=255)
     slug = models.SlugField(_("Slug"), editable=settings.EDITABLE_SLUGS,
         max_length=255, unique=True)
+    base_legend = models.TextField(_("Base legend"), blank=True)
     intro = models.TextField(_("Intro"), blank=True)
     logo = models.BooleanField(_("Logo"), default=True, help_text=
         _("If enabled, the display of the logo"))

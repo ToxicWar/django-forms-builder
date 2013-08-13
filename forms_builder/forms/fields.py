@@ -10,7 +10,7 @@ from forms_builder.forms.settings import USE_HTML5, EXTRA_FIELDS
 
 try:
     import crispy_forms
-    from crispy_forms.layout import Div, Field
+    from crispy_forms.layout import Div, Field, Fieldset
 except ImportError:
     crispy_forms = None
 
@@ -111,7 +111,7 @@ if crispy_forms:
         'fio': Div(Field('fio', css_class='form__input'), css_class='form__row'),
         'mobilnyi_telefon': Div(Field('mobilnyi_telefon', css_class='form__input'), css_class='form__row'),
         'elektronnaia_pochta': Div(Field('elektronnaia_pochta', css_class='form__input'), css_class='form__row'),
-        'avtomobil': Div(Field('avtomobil', css_class='form__input', data_starter='styler'), css_class='form__row'),
+        'avtomobil': Div(Field('avtomobil', css_class='form__input'), css_class='form__row'),
         'god_vypuska': Div(Field('god_vypuska', css_class='form__inputs', data_starter='styler'), css_class='form__row'),
         'gosudarstvennyi_registratsionnyi_nomer': Div(Field('gosudarstvennyi_registratsionnyi_nomer', css_class='form__input'), css_class='form__row'),
         'probeg': Div(Field('probeg', css_class='form__input'), css_class='form__row'),
@@ -153,3 +153,6 @@ if crispy_forms:
         'nazvanie_aktsii_po_spets_predlozheniiu': Div(Field('nazvanie_aktsii_po_spets_predlozheniiu', css_class='form__input'), css_class='form__row'),
         'diler': Div(Field('diler', css_class='form__input'), css_class='form__row'),
     }
+
+    def get_field_set(legend_text, fields):
+        return Fieldset(legend_text, css_class='dialog__group', *fields)

@@ -1,4 +1,5 @@
-
+# coding: utf-8
+from __future__ import unicode_literals
 from datetime import date, datetime
 from os.path import join, split
 from uuid import uuid4
@@ -206,11 +207,21 @@ class FormForForm(forms.ModelForm):
 
     def layout_setup(self):
         _fields = [field.slug for field in self.form_fields]
-        _layout = ()
-        for _field in _fields:
-            _layout += (fields.DIVS[_field],)
+        personal_information = ['fio', 'mobilnyi_telefon', 'elektronnaia_pochta', 'kommentarii']
 
-        layout = Layout(*_layout)
+        for item in personal_information:
+            if item in _fields:
+                del(_fields[_fields.index(item)])
+            else:
+                del(personal_information[personal_information.index(item)])
+
+        _layout_fields = (fields.DIVS[_field] for _field in _fields)
+        personal_information_fields = (fields.DIVS[item] for item in personal_information)
+
+        _layout__fieldset = fields.get_field_set(self.form.base_legend, _layout_fields)
+        personal_information_fieldset = fields.get_field_set('ПЕРСОНАЛЬНАЯ ИНФОРМАЦИЯ', personal_information_fields)
+
+        layout = Layout(_layout__fieldset, personal_information_fieldset)
         self.helper.add_layout(layout)
 
     def save(self, **kwargs):
