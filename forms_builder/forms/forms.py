@@ -13,9 +13,6 @@ from django.template import Template
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Field
-
 from forms_builder.forms import fields
 from forms_builder.forms.models import FormEntry, FieldEntry
 from forms_builder.forms import settings
@@ -151,10 +148,7 @@ class FormForForm(forms.ModelForm):
             if "max_length" in arg_names:
                 field_args["max_length"] = settings.FIELD_MAX_LENGTH
             if "choices" in arg_names:
-                if field.field_type == 103 or field.field_type == 104:
-                    field_args['site'] = self.request.site
-                else:
-                    field_args["choices"] = field.get_choices()
+                field_args["choices"] = field.get_choices()
             if field_widget is not None:
                 field_args["widget"] = field_widget
             #
@@ -200,29 +194,6 @@ class FormForForm(forms.ModelForm):
             if field.placeholder_text and not field.default:
                 text = field.placeholder_text
                 self.fields[field_key].widget.attrs["placeholder"] = text
-
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-        self.layout_setup()
-
-    def layout_setup(self):
-        _fields = [field.slug for field in self.form_fields]
-        personal_information = ['fio', 'mobilnyi_telefon', 'elektronnaia_pochta', 'kommentarii']
-
-        for item in personal_information:
-            if item in _fields:
-                del(_fields[_fields.index(item)])
-            else:
-                del(personal_information[personal_information.index(item)])
-
-        _layout_fields = (fields.DIVS[_field] for _field in _fields)
-        personal_information_fields = (fields.DIVS[item] for item in personal_information)
-
-        _layout__fieldset = fields.get_field_set(self.form.base_legend, _layout_fields)
-        personal_information_fieldset = fields.get_field_set('ПЕРСОНАЛЬНАЯ ИНФОРМАЦИЯ', personal_information_fields)
-
-        layout = Layout(_layout__fieldset, personal_information_fieldset)
-        self.helper.add_layout(layout)
 
     def save(self, **kwargs):
         """

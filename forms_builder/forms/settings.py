@@ -43,3 +43,6 @@ MAIN_LOGO = getattr(settings, "FORMS_BUILDER_MAIN_LOGO", '')
 
 # Main domain
 MAIN_DOMAIN = getattr(settings, "MAIN_DOMAIN", '')
+
+# Form FormForForm
+FORM_FOR_FORM = getattr(settings, "FORMS_BUILDER_FORM_FOR_FORM", 'forms_builder.forms.forms.FormForForm')

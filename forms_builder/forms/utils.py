@@ -1,5 +1,7 @@
 
 from django.template.defaultfilters import slugify as django_slugify
+from django.core.exceptions import ImproperlyConfigured
+from django.utils.importlib import import_module
 from unidecode import unidecode
 
 
@@ -41,3 +43,20 @@ def split_choices(choices_string):
     Convert a comma separated choices string to a list.
     """
     return filter(None, [x.strip() for x in choices_string.split(",")])
+
+def import_class(import_path):
+        try:
+            dot = import_path.rindex('.')
+        except ValueError:
+            raise ImproperlyConfigured("%s isn't a Python path." % import_path)
+        module, classname = import_path[:dot], import_path[dot + 1:]
+        try:
+            mod = import_module(module)
+        except ImportError as e:
+            raise ImproperlyConfigured('Error importing module %s: "%s"' %
+                                       (module, e))
+        try:
+            return getattr(mod, classname)
+        except AttributeError:
+            raise ImproperlyConfigured('Module "%s" does not define a "%s" '
+                                       'class.' % (module, classname))

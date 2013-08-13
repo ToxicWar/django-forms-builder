@@ -7,14 +7,14 @@ from django.template import RequestContext
 from django.utils.http import urlquote
 from email_extras.utils import send_mail_template
 
-from forms_builder.forms.forms import FormForForm
 from forms_builder.forms.models import Form, Field
-from forms_builder.forms.settings import SEND_FROM_SUBMITTER, USE_SITES, MAIN_DOMAIN
+from forms_builder.forms.settings import SEND_FROM_SUBMITTER, USE_SITES, MAIN_DOMAIN, FORM_FOR_FORM
 from forms_builder.forms.signals import form_invalid, form_valid
-from forms_builder.forms.utils import split_choices, now
+from forms_builder.forms.utils import split_choices, now, import_class
 
 import requests, json
 
+FormForForm = import_class(FORM_FOR_FORM)
 
 def form_detail(request, slug, template="forms/form_detail.html"):
     """

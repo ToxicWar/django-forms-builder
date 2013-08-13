@@ -1,11 +1,13 @@
 from django import template
 from django.template.loader import get_template
 from forms_builder.forms import settings
-from forms_builder.forms.forms import FormForForm
+from forms_builder.forms.settings import FORM_FOR_FORM
+from forms_builder.forms.utils import import_class
 from forms_builder.forms.models import Form, FormEntry
 
-
 register = template.Library()
+
+FormForForm = import_class(FORM_FOR_FORM)
 
 
 class BuiltFormNode(template.Node):
