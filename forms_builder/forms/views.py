@@ -60,7 +60,7 @@ def form_detail(request, slug, template="forms/form_detail.html"):
             email_from = form.email_from or settings.DEFAULT_FROM_EMAIL
 
             try:
-                field = form_for_form.form.fields.get(field_type=104)
+                field = form_for_form.form.fields.get(field_type=102)
                 email_to = form_for_form.cleaned_data[field.slug]
             except Field.DoesNotExist:
                 contacts = request.site.dealercompany.dealercontact_set.filter(forms__in=[form])
