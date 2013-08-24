@@ -94,7 +94,7 @@ class ContactDataFormNode(template.Node):
 
     def render(self, context):
         form_entry = template.Variable(self.value).resolve(context)
-        slugs = ['fio', 'mobilnyi_telefon', 'elektronnaia_pochta']
+        slugs = ['fio', 'telefon', 'elektronnaia_pochta']
 
         fields = form_entry.form.fields.filter(slug__in=slugs)
         fields_id = [field.id for field in fields]
