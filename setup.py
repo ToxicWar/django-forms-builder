@@ -37,7 +37,7 @@ try:
         install_requires = [
             "sphinx-me >= 0.1.2",
             "unidecode",
-            "django-email-extras >= 0.1.9",
+            "django-email-extras == 0.1.13",
             "django",
         ],
         classifiers = [
