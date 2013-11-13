@@ -77,10 +77,13 @@ class BuiltDataFormByTemplateNode(template.Node):
         fields = form_entry.form.fields.order_by('order').exclude(slug='agree_to_receive_news')
         fields_slug = fields.values('slug')
         fields_entry = form_entry.fields.order_by('order')
+        fields_entry_id = [item['field_id'] for item in fields_entry.values('field_id')]
 
         for i in range(len(fields_entry)):
             slug = fields_slug[i]['slug']
-            context[slug] = fields_entry.get(field_id=fields.get(slug=slug).id).value
+            field_id = fields.get(slug=slug).id
+            if field_id in fields_entry_id:
+                context[slug] = fields_entry.get(field_id=field_id).value
 
         t = get_template("forms/includes/%s" % (self.template or form_entry.form.slug + '.html'))
         return t.render(context)
