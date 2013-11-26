@@ -1,4 +1,3 @@
-
 from __future__ import with_statement
 import os
 from setuptools import setup, find_packages
@@ -37,8 +36,7 @@ try:
         install_requires = [
             "sphinx-me >= 0.1.2",
             "unidecode",
-            "django-email-extras == 0.1.13",
-            "django",
+            "django-email-extras == 0.1.13"
         ],
         classifiers = [
             "Development Status :: 5 - Production/Stable",
