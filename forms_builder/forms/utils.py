@@ -44,6 +44,7 @@ def split_choices(choices_string):
     """
     return filter(None, [x.strip() for x in choices_string.split(",")])
 
+
 def import_class(import_path):
         try:
             dot = import_path.rindex('.')
@@ -60,3 +61,12 @@ def import_class(import_path):
         except AttributeError:
             raise ImproperlyConfigured('Module "%s" does not define a "%s" '
                                        'class.' % (module, classname))
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR', None)
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR', '')
+    return ip

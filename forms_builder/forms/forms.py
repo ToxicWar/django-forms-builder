@@ -16,7 +16,7 @@ from django.utils.translation import ugettext_lazy as _
 from forms_builder.forms import fields
 from forms_builder.forms.models import FormEntry, FieldEntry
 from forms_builder.forms import settings
-from forms_builder.forms.utils import now, split_choices
+from forms_builder.forms.utils import now, split_choices, get_client_ip
 
 
 fs = FileSystemStorage(location=settings.UPLOAD_ROOT)
@@ -204,6 +204,7 @@ class FormForForm(forms.ModelForm):
         entry.form = self.form
         entry.site = self.request.site
         entry.entry_time = now()
+        entry.clien_ip = get_client_ip(self.request)
         entry.save()
         entry_fields = entry.fields.values_list("field_id", flat=True)
         new_entry_fields = []
