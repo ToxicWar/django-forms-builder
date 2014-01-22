@@ -204,7 +204,7 @@ class FormForForm(forms.ModelForm):
         entry.form = self.form
         entry.site = self.request.site
         entry.entry_time = now()
-        entry.clien_ip = get_client_ip(self.request)
+        entry.client_ip = get_client_ip(self.request)
         entry.save()
         entry_fields = entry.fields.values_list("field_id", flat=True)
         new_entry_fields = []

@@ -214,7 +214,7 @@ class AbstractFormEntry(models.Model):
     """
 
     entry_time = models.DateTimeField(_("Date/time"))
-    clien_ip = models.CharField(_('Client IP'), blank=True, default='', max_length=20)
+    client_ip = models.CharField(_('Client IP'), blank=True, default='', max_length=20)
 
     class Meta:
         verbose_name = _("Form entry")
