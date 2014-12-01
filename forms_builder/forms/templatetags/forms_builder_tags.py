@@ -74,7 +74,7 @@ class BuiltDataFormByTemplateNode(template.Node):
     def render(self, context):
         form_entry = template.Variable(self.value).resolve(context)
 
-        fields = form_entry.form.fields.order_by('order').exclude(slug='agree_to_receive_news')
+        fields = form_entry.form.fields.order_by('order')
         fields_slug = fields.values('slug')
         fields_entry = form_entry.fields.order_by('order')
         fields_entry_id = [item['field_id'] for item in fields_entry.values('field_id')]
